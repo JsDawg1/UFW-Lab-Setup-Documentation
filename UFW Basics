@@ -1,0 +1,98 @@
+# Part 2 — UFW Firewall Configuration and Rule Management
+
+## 1. Objective
+
+The objective of this section was to configure and manage the Uncomplicated Firewall (UFW) on a Debian 13 server. The practical work involved configuring default firewall policies, creating and managing inbound firewall rules, controlling access to specific ports and protocols, and verifying the resulting firewall configuration.
+
+## 2. Root Privilege Access
+
+The `su -` command was used to switch to the root user. This provided administrative privileges for the firewall configuration without requiring `sudo` before every command.
+
+```bash
+su -
+```
+
+After switching to the root account, UFW commands could be executed directly.
+
+## 3. Default Firewall Policy
+
+The default incoming firewall policy was configured to deny incoming connections.
+
+```bash
+ufw default deny incoming
+```
+
+This means that incoming connections are denied by default unless an explicit firewall rule allows the required traffic.
+
+The outgoing policy was retained separately so that outbound connections could continue according to the configured UFW policy.
+
+## 4. Allowing HTTP Traffic
+
+An explicit rule was created to allow incoming TCP traffic on port 80, which is the standard HTTP port.
+
+```bash
+ufw allow in to any port 80 proto tcp
+```
+
+This allows clients to establish TCP connections to port 80 while other incoming traffic remains controlled by the firewall rules.
+
+## 5. Denying Traffic on Port 8080
+
+Incoming TCP traffic to port 8080 was denied using:
+
+```bash
+ufw deny in to any port 8080 proto tcp
+```
+
+This rule prevents incoming TCP connections to port 8080.
+
+## 6. Firewall Rule Management
+
+Existing UFW rules were inspected using:
+
+```bash
+ufw status numbered
+```
+
+The numbered rules were used to identify individual firewall entries.
+
+The following rule numbers were identified for removal:
+
+* Rule 3
+* Rule 4
+* Rule 7
+* Rule 8
+
+These rules were removed using the UFW rule-deletion mechanism after confirming their corresponding rule numbers.
+
+Example:
+
+```bash
+ufw delete <rule-number>
+```
+
+The firewall status was subsequently checked again to verify the changes.
+
+## 7. Verification
+
+The configured firewall rules were verified using:
+
+```bash
+ufw status numbered
+```
+
+The firewall configuration was reviewed to confirm that:
+
+* The default incoming policy was configured as intended.
+* HTTP traffic on TCP port 80 was explicitly allowed.
+* TCP traffic on port 8080 was denied.
+* Unnecessary rules numbered 3, 4, 7, and 8 were removed.
+* The final rule set reflected the intended network-access policy.
+
+
+
+## 8 . Result
+
+The Debian 13 server was successfully configured with UFW firewall rules controlling incoming network traffic. Default-deny behavior was implemented for incoming connections, while required services such as HTTP were explicitly permitted. Specific unwanted traffic, such as TCP connections to port 8080, was denied, and unnecessary firewall rules were removed.
+
+This exercise demonstrated practical firewall administration, including default policy configuration, port-based access control, protocol-specific rules, rule identification, rule deletion, and configuration verification.
